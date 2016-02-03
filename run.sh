@@ -1,19 +1,19 @@
 #!/bin/bash
 
 if [ ! "$NAMESPACE" ]; then
-  echo \$NAMESPACE variable required
+  >&2 echo \$NAMESPACE variable required
   exit 1
 fi
 
 if [ ! "$SELECTOR" ]; then
-  echo \$SELECTOR variable required
+  >&2 echo \$SELECTOR variable required
   exit 1
 fi
 
 PEER_NODES=$(curl -s \
   --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt \
   -H "Authorization: Bearer `cat /run/secrets/kubernetes.io/serviceaccount/token`" \
-  https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT/api/v1/namespace/$NAMESPACE/pods?labelSelector=$SELECTOR \
+  https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT/api/v1/namespaces/$NAMESPACE/pods?labelSelector=$SELECTOR \
     | grep podIP | grep -v `hostname -i` | awk '{print $2}'|sed 's/"//g' | sed 's/,/' | xargs echo)
   
 
