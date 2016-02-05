@@ -22,6 +22,5 @@ CONFIG=/usr/share/elasticsearch/config/elasticsearch.yml
 echo "discovery.zen.ping.unicast.hosts: [$PEER_NODES]" >> $CONFIG
 echo "discovery.zen.ping.multicast.enabled: false" >> $CONFIG
 echo "network.publish_host: `hostname -i`" >> $CONFIG
-echo "network.publish_host: `hostname -i`" >> $CONFIG
 
 exec /docker-entrypoint.sh elasticsearch $@
